@@ -4,6 +4,7 @@ var ctx = canvas.getContext("2d");
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
 
+const settings = document.getElementById('settings')
 const speed = document.getElementById('speed')
 const speedvalue = document.getElementById('speedvalue')
 
@@ -67,11 +68,10 @@ function getMouseClick() {
     clickY = event.offsetY;
   });
 };
-function getCogClick() {
-  $("#cog").click(function(event){
-    gameStop = 1;
-  });
-};
+$("#cog").click(function(event){
+  gameStop = 1;
+  $(".settings").toggleClass("active");
+});
 
 function random(min, max) {
   var num = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -203,7 +203,6 @@ setInterval(checkMouseOnGamePlace(), 100);
 var drawGameBalls = setInterval(function() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
   ctx.fillRect(0,0,width,height);
-  getCogClick();
   getMouse();
   getMouseClick();
   ballGreen.draw();

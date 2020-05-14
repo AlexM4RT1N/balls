@@ -11,7 +11,9 @@
   z-index: 5;
 }
 
+
 .settings {
+  display: none;
   position: absolute;
   top: 5px;
   left: 40px;
@@ -20,6 +22,10 @@
   padding: 15px;
   background: rgb(99, 99, 99);
   color: rgb(217, 237, 255);
+}
+
+.active {
+  display: block;
 }
 
 h2 {
