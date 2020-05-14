@@ -206,8 +206,8 @@ function gameOver() {
 };
 
 function Ball(color) {
-  this.x = width/2; //random(0 + maxSizeBall,width - maxSizeBall);
-  this.y = (height-border)/2; //random(0 + maxSizeBall + border,height - maxSizeBall);
+  this.x =  random(0 + maxSizeBall*2,width - maxSizeBall*2);//width/2;
+  this.y =  random(0 + maxSizeBall*2 + border,height - maxSizeBall*2);//(height-border)/2;
   this.xSpeed = random(-speedBall, speedBall);
   this.ySpeed = random(-speedBall, speedBall);
   this.color = color;
