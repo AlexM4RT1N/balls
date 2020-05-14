@@ -4,7 +4,6 @@ var ctx = canvas.getContext("2d");
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
 
-const settings = document.getElementById('settings')
 const speed = document.getElementById('speed')
 const speedvalue = document.getElementById('speedvalue')
 
@@ -69,8 +68,8 @@ function getMouseClick() {
   });
 };
 $("#cog").click(function(event){
-  gameStop = 1;
   $(".settings").toggleClass("active");
+  gameStop = 1;
 });
 
 function random(min, max) {
