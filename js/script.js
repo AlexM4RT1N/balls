@@ -96,6 +96,7 @@ var mouseX;
 var mouseY;
 var clickX;
 var clickY;
+var border = 65;
 var gameScore = 0;
 var gameMaxScore = 0;
 var gameStop = 0;
@@ -108,17 +109,6 @@ $("#top").click(function(event){
   $(".fa-top").toggleClass("active");
   gameStop = 1;
 });
-function circle(x,y,size,fillCircle,color) {
-  ctx.beginPath();
-  ctx.arc(x,y,size,0,Math.PI * 2, false);
-  if(fillCircle) {
-    ctx.fillStyle = color;
-    ctx.fill();
-  } else {
-    ctx.strokeStyle = color;
-    ctx.stroke();
-  }
-}
 function getMouse() {
   $("#canvas").mousemove(function(event){
     mouseX = event.offsetX;
@@ -134,40 +124,64 @@ function getMouseClick() {
 
 function random(min, max) {
   var num = 0;
-    while (num === 0) {
-      num = Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+  while (num === 0) {
+    num = Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   return num;
 };
+function circle(x,y,size,fillCircle,color) {
+  ctx.beginPath();
+  ctx.arc(x,y,size,0,Math.PI * 2, false);
+  if(fillCircle) {
+    ctx.fillStyle = color;
+    ctx.fill();
+  } else {
+    ctx.strokeStyle = color;
+    ctx.stroke();
+  }
+}
+function drawBorder() {
+  ctx.fillStyle = "White";
+  ctx.strokeStyle = "Gray";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, border);
+  ctx.lineTo(0, border - 3);
+  ctx.lineTo(width, border - 3);
+  ctx.lineTo(width, border);
+  ctx.stroke();
+  ctx.fill();
+}
 function drawScore() {
   ctx.font = "Bold 35px Courier";
-  ctx.textAlign = "center";
+  ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.lineWidth = 2;
   ctx.strokeStyle = "Gray";
-  ctx.strokeText("Score: " + gameScore, width/2, 15);
+  ctx.strokeText(" :", width/2-5, 15);
   ctx.fillStyle = "White";
-  ctx.fillText("Score: " + gameScore, width/2, 15);
+  ctx.fillText(" :", width/2-5, 15);
+  ctx.font = "Bold 42px Courier";
+  ctx.strokeText(gameScore, width/2+35, 15);
+  ctx.fillText(gameScore, width/2+35, 15);
 
 };
 function drawMaxScore() {
   if(localStorage.getItem('maxscore')) {
     gameMaxScore = Number(localStorage.getItem('maxscore'));
-  } //else {
-  //   gameMaxScore = 0;
-  // }
-  ctx.font = "Bold 25px Courier";
+  }
+  ctx.font = "Bold 20px Courier";
   ctx.textAlign = "right";
   ctx.textBaseline = "top";
   ctx.lineWidth = 2;
   ctx.strokeStyle = "Gray";
-  ctx.strokeText("Max score: " + gameMaxScore, width - 70, 15);
+  ctx.strokeText("Max score: " + gameMaxScore, width - 90, 22);
   ctx.fillStyle = "White";
-  ctx.fillText("Max score: " + gameMaxScore, width - 70, 15);
+  ctx.fillText("Max score: " + gameMaxScore, width - 90, 22);
 
 };
 function checkMouseOnGamePlace() {
-  if ((mouseX < minSizeBall || mouseX > width - minSizeBall) || (mouseY < minSizeBall || mouseY > height - minSizeBall)) {
+  if ((mouseX < minSizeBall || mouseX > width - minSizeBall) || (mouseY < minSizeBall + border || mouseY > height - minSizeBall)) {
     gameScore = 0;
   }
 };
@@ -192,8 +206,8 @@ function gameOver() {
 };
 
 function Ball(color) {
-  this.x = random(0 + maxSizeBall,width - maxSizeBall);
-  this.y = random(0 + maxSizeBall,height - maxSizeBall);
+  this.x = width/2; //random(0 + maxSizeBall,width - maxSizeBall);
+  this.y = (height-border)/2; //random(0 + maxSizeBall + border,height - maxSizeBall);
   this.xSpeed = random(-speedBall, speedBall);
   this.ySpeed = random(-speedBall, speedBall);
   this.color = color;
@@ -220,7 +234,7 @@ Ball.prototype.checkCollision = function() {
   if (this.x < this.size || this.x > width - this.size) {
     this.xSpeed = -this.xSpeed;
   }
-  if (this.y < this.size || this.y > height - this.size) {
+  if (this.y < this.size + border || this.y > height - this.size) {
     this.ySpeed = -this.ySpeed;
   }
 };
@@ -237,8 +251,8 @@ Ball.prototype.checkDistance = function() {
 };
 
 function BallScore(color, size) {
-  this.x = random(0 + maxSizeBall,width - maxSizeBall);
-  this.y = random(0 + maxSizeBall,height - maxSizeBall);
+  this.x = random(0 + maxSizeBall * 2, width - maxSizeBall * 2);
+  this.y = random(0 + maxSizeBall * 2 + border, height - maxSizeBall * 2);
   this.color = color;
   this.size = size;
 };
@@ -249,8 +263,8 @@ BallScore.prototype.checkClick = function() {
   distanceClick = Math.sqrt(((clickX - this.x) * (clickX - this.x)) + ((clickY - this.y) * (clickY - this.y)));
   if (distanceClick < this.size) {
     if(this.color === "Green") {
-      this.x = random(0 + maxSizeBall,width - maxSizeBall);
-      this.y = random(0 + maxSizeBall,height - maxSizeBall);
+      this.x = random(0 + maxSizeBall * 2, width - maxSizeBall * 2);
+      this.y = random(0 + maxSizeBall * 2 + border, height - maxSizeBall * 2);
       gameScore++;
     } else if(this.color === "Yellow") {
       this.size = 0;
@@ -284,6 +298,7 @@ setInterval(checkMouseOnGamePlace, 100);
 var drawGameBalls = setInterval(function() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
   ctx.fillRect(0,0,width,height);
+  drawBorder();
   getMouse();
   getMouseClick();
   ballGreen.draw();
