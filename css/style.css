@@ -43,6 +43,7 @@ img {
 
 .fa-cog {
   position: absolute;
+  cursor: pointer;
   top: 5px;
   left: 8px;
   width: 50px;
@@ -88,8 +89,9 @@ img {
 
 .fa-play {
   position: absolute;
+  cursor: pointer;
   top: 5px;
-  left: calc(50% - 90px);
+  left: calc(50% - 110px);
   width: 50px;
   height: 50px;
   z-index: 5;
@@ -104,7 +106,7 @@ img {
 .fa-play:hover,
 .fa-play:hover + .fa-playsub {
   top: 5px;
-  left: calc(50% - 90px);
+  left: calc(50% - 110px);
   width: 50px;
   height: 50px;
   transform: rotateX(0deg);
@@ -113,7 +115,7 @@ img {
 }
 .fa-play.active {
   top: 9px;
-  left: calc(50% - 90px);
+  left: calc(50% - 110px);
   width: 42px;
   height: 42px;
   transform: rotateX(0deg);
@@ -123,7 +125,7 @@ img {
 }
 .fa-playsub.active {
   top: 5px;
-  left: calc(50% - 90px);
+  left: calc(50% - 110px);
   width: 50px;
   height: 50px;
   transform: rotateX(0deg);
@@ -134,7 +136,7 @@ img {
 .fa-score {
   position: absolute;
   top: 6px;
-  left: calc(50% - 30px);
+  left: calc(50% - 10px);
   width: 60px;
   height: 60px;
   z-index: 5;
@@ -149,7 +151,7 @@ img {
 .fa-score:hover,
 .fa-score:hover + .fa-scoresub {
   top: 9px;
-  left: calc(50% - 30px);
+  left: calc(50% - 10px);
   width: 60px;
   height: 60px;
   transform: rotateX(0deg);
@@ -161,6 +163,7 @@ img {
 
 .fa-top {
   position: absolute;
+  cursor: pointer;
   top: 5px;
   right: 8px;
   width: 50px;
@@ -211,6 +214,60 @@ img {
 }
 .fa-top.active:hover + .fa-topsub.active {
   top: 5px;
+}
+
+.nameplayer {
+  /* display: none; */
+  position: absolute;
+  top: 5px;
+  left: 110px;
+  width: 245px;
+  height: 51px;
+  padding: 15px;
+  color: rgb(53, 53, 53);
+  background: rgb(217, 237, 255);
+  border-radius: 5px;
+  box-shadow: inset 1px 5px 5px rgb(66, 66, 66), 1px 5px 2px rgb(121, 121, 121);
+  transform: rotateX(40deg);
+  transition: all 0.5s;
+  font-size: 18px;
+  text-shadow:  1px 5px 4px rgb(66, 66, 66);
+}
+.nameplayer:hover,
+.nameplayer:focus {
+  top: 6px;
+  height: 48px;
+  box-shadow: inset 1px 1px 4px rgb(66, 66, 66), 1px 1px 2px rgb(121, 121, 121);
+  transform: rotateX(0deg);
+  transition: all 0.5s;
+  text-shadow:  0px 0px 2px rgb(66, 66, 66);
+}
+.nameplayer::placeholder {
+  font-size: 18px;
+  font-family: serif;
+  color: rgb(53, 53, 53);
+  text-shadow:  1px 5px 4px rgb(66, 66, 66);
+  transform: rotateX(40deg);
+  transition: all 0.5s;
+}
+.nameplayer:hover::placeholder,
+.nameplayer:focus::placeholder {
+  text-shadow:  0px 0px 2px rgb(66, 66, 66);
+  transform: rotateX(0deg);
+  transition: all 0.5s;
+}
+
+.score-list {
+  display: none;
+  position: absolute;
+  top: 80px;
+  right: 15px;
+  width: 230px;
+  height: 430px;
+  padding: 15px;
+  background: rgb(99, 99, 99);
+  color: rgb(217, 237, 255);
+  color: rgb(217, 237, 255);
 }
 
 .settings {

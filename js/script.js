@@ -15,6 +15,9 @@ const maxnumbervalue = document.getElementById('maxnumbervalue')
 const minnumber = document.getElementById('minnumber')
 const minnumbervalue = document.getElementById('minnumbervalue')
 
+const scorelist = document.getElementById('scorelist')
+const nameplayer = document.getElementById('nameplayer')
+
 var maxSizeBall;
 var minSizeBall;
 var speedBall;
@@ -100,6 +103,7 @@ var border = 65;
 var gameScore = 0;
 var gameMaxScore = 0;
 var gameStop = 0;
+// var inputscorelist;
 
 $("#cog").click(function(event){
   $(".settings,.fa-cog").toggleClass("active");
@@ -108,6 +112,22 @@ $("#cog").click(function(event){
 $("#top").click(function(event){
   $(".fa-top").toggleClass("active");
   gameStop = 1;
+});
+let gameDataArray = [];
+localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
+const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
+$("#play").click(function(event){
+  $(".fa-play").toggleClass("active");
+  var inputscorelist = nameplayer.value;
+  gameDataArray.push(inputscorelist)
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray))
+  gameDataArray.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    scorelist.appendChild(li);
+  })
+  
+  // gameStart = 1;
 });
 function getMouse() {
   $("#canvas").mousemove(function(event){
@@ -153,24 +173,24 @@ function drawBorder() {
   ctx.fill();
 }
 function drawScore() {
-  ctx.font = "Bold 35px Courier";
+  ctx.font = "Bold 35px serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.lineWidth = 2;
   ctx.strokeStyle = "Gray";
-  ctx.strokeText(" :", width/2-5, 15);
+  ctx.strokeText(" :", width/2+28, 15);
   ctx.fillStyle = "White";
-  ctx.fillText(" :", width/2-5, 15);
-  ctx.font = "Bold 42px Courier";
-  ctx.strokeText(gameScore, width/2+35, 15);
-  ctx.fillText(gameScore, width/2+35, 15);
+  ctx.fillText(" :", width/2+28, 15);
+  ctx.font = "Bold 42px serif";
+  ctx.strokeText(gameScore, width/2+52, 15);
+  ctx.fillText(gameScore, width/2+52, 15);
 
 };
 function drawMaxScore() {
   if(localStorage.getItem('maxscore')) {
     gameMaxScore = Number(localStorage.getItem('maxscore'));
   }
-  ctx.font = "Bold 20px Courier";
+  ctx.font = "24px serif";
   ctx.textAlign = "right";
   ctx.textBaseline = "top";
   ctx.lineWidth = 2;
@@ -190,7 +210,7 @@ function gameOver() {
     if (gameScore > gameMaxScore) {
       localStorage.setItem('maxscore', gameScore);
     }
-    ctx.font = "Bold 60px Courier";
+    ctx.font = "Bold 60px serif";
     ctx.lineWidth = 2;
     ctx.fillStyle = "White";
     ctx.textAlign = "center";
