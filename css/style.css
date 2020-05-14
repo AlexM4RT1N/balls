@@ -1,23 +1,181 @@
-* {
-  margin: 0;
+*{
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+*,*:before,*:after{
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+
+nav,footer,header,aside{display: block;}
+
+html,body{
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	line-height: 1;
+	font-size: 14px;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+input,button,textarea{font-family:inherit;}
+
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a, a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: 400;}
+
+img {
+	display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .fa-cog {
   position: absolute;
   top: 5px;
-  left: 5px;
-  width: 30px;
-  height: 30px;
+  left: 8px;
+  width: 50px;
+  height: 50px;
   z-index: 5;
+  transform: rotateX(40deg);
+  transition: all 0.5s;
+}
+.fa-cogsub {
+  top: 10px;
+  z-index: 4;
+  transition: all 0.5s;
+}
+.fa-cog:hover,
+.fa-cog:hover + .fa-cogsub {
+  top: 5px;
+  left: 8px;
+  width: 50px;
+  height: 50px;
+  transform: rotateX(0deg);
+  transform: rotateZ(0deg);
+  transition: all 0.5s;
 }
 
+.fa-score {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  z-index: 5;
+  transform: rotateX(40deg);
+  transition: all 0.5s;
+}
+.fa-scoresub {
+  top: 10px;
+  z-index: 4;
+  transition: all 0.5s;
+}
+.fa-score:hover,
+.fa-score:hover + .fa-scoresub {
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  transform: rotateX(0deg);
+  transform: rotateZ(0deg);
+  transition: all 0.5s;
+}
+
+.fa-cog.active {
+  top: 9px;
+  left: 12px;
+  width: 42px;
+  height: 42px;
+  transform: rotateX(0deg);
+  transform: rotateZ(20deg);
+  transition: all 0.5s;
+  transition: transform 0.3s 0.3s;
+}
+.fa-cogsub.active {
+  top: 5px;
+  left: 8px;
+  width: 50px;
+  height: 50px;
+  transform: rotateX(0deg);
+  transform: rotateZ(20deg);
+  transition: all 0.5s;
+}
+
+
+.fa-top {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
+  z-index: 5;
+  transform: rotateY(30deg);
+  transition: all 0.5s;
+}
+.fa-topsub {
+  right: 12px;
+  z-index: 4;
+  transition: all 0.5s;
+}
+.fa-top:hover,
+.fa-top:hover + .fa-topsub {
+  top: 5px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
+  transform: rotateY(0deg);
+  transition: all 0.5s;
+}
+
+.fa-top.active {
+  top: 9px;
+  right: 8px;
+  width: 42px;
+  height: 42px;
+  transform: rotateY(0deg);
+  transform: rotateZ(-20deg);
+  transition: all 0.5s;
+}
+.fa-topsub.active {
+  right: 8px;
+  transform: rotateY(0deg);
+  transform: rotateZ(-20deg);
+  transition: all 0.5s;
+}
+.fa-top.active:hover,
+.fa-top.active:hover + .fa-topsub.active {
+  top: 5px;
+  right: 8px;
+  width: 50px;
+  height: 50px;
+  transform: rotateY(0deg);
+  transform: rotateZ(20deg);
+  transition: all 0.5s;
+}
+.fa-top.active:hover + .fa-topsub.active {
+  top: 5px;
+}
 
 .settings {
   display: none;
   position: absolute;
   top: 5px;
   left: 40px;
-  width: 200px;
+  width: 230px;
   height: 600px;
   padding: 15px;
   background: rgb(99, 99, 99);
@@ -50,7 +208,7 @@ h2 {
 span {
   display: inline-block;
   font-size: 25px;
-  padding-left: 10px;
+  padding-left: 15px;
 }
 
 input {

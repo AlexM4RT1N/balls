@@ -9,22 +9,44 @@
   <body>
 
     <img src="./img/cog.svg" class="fa-cog" id="cog"/>
+    <img src="./img/cogsub.svg" class="fa-cog fa-cogsub"/>
+    <img src="./img/top.svg" class="fa-top" id="top"/>
+    <img src="./img/topsub.svg" class="fa-top fa-topsub"/>
+    <img src="./img/score.svg" class="fa-score" id="score"/>
+    <img src="./img/scoresub.svg" class="fa-score fa-scoresub"/>
 
     <div class="settings" id="settings">
       <h2>Game settings:</h2>
 
       <div class="settings__blocks">
+        <label for="maxsize">Max size balls</label>
+        <input type="range" id="maxsize" name="maxsize" min="1" max="30" step="1"/>
+        <span id="maxsizevalue"></span>
+      </div>
+
+      <div class="settings__blocks">
         <label for="minsize">Min size balls</label>
-        <input type="range" id="minsize" name="minsize" min="1" max="15" value="8" step="1"/>
-        <span id="minsizevalue"> : 8</span>
+        <input type="range" id="minsize" name="minsize" min="1" max="15" step="1"/>
+        <span id="minsizevalue"></span>
       </div>
 
       <div class="settings__blocks">
         <label for="speed">Speed balls</label>
         <input type="range" id="speed" name="speed" min="1" max="20" step="1"/>
-        <span id="speedvalue"> : 5</span>
+        <span id="speedvalue"></span>
       </div>
-      
+
+      <div class="settings__blocks">
+        <label for="maxnumber">Max number of balls</label>
+        <input type="range" id="maxnumber" name="maxnumber" min="10" max="100" step="5"/>
+        <span id="maxnumbervalue"></span>
+      </div>
+
+      <div class="settings__blocks">
+        <label for="minnumber">Min number of balls</label>
+        <input type="range" id="minnumber" name="minnumber" min="1" max="20" step="1"/>
+        <span id="minnumbervalue"></span>
+      </div>
     </div>
 
     <canvas id="canvas"></canvas>

@@ -1,27 +1,113 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
+///////////////////////// MAX SCORE PLAYER
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
 
+const maxsize = document.getElementById('maxsize')
+const maxsizevalue = document.getElementById('maxsizevalue')
+const minsize = document.getElementById('minsize')
+const minsizevalue = document.getElementById('minsizevalue')
 const speed = document.getElementById('speed')
 const speedvalue = document.getElementById('speedvalue')
+const maxnumber = document.getElementById('maxnumber')
+const maxnumbervalue = document.getElementById('maxnumbervalue')
+const minnumber = document.getElementById('minnumber')
+const minnumbervalue = document.getElementById('minnumbervalue')
 
+var maxSizeBall;
+var minSizeBall;
 var speedBall;
+var maxHowManyBalls;
+var howManyBalls;
+
+if(localStorage.getItem('maxsize')) {
+  maxSizeBall = Number(localStorage.getItem('maxsize'));
+} else {
+  maxSizeBall = 14;
+}
+if(localStorage.getItem('minsize')) {
+  minSizeBall = Number(localStorage.getItem('minsize'));
+} else {
+  minSizeBall = 8;
+}
 if(localStorage.getItem('speed')) {
   speedBall = Number(localStorage.getItem('speed'));
 } else {
   speedBall = 5;
 }
+if(localStorage.getItem('maxnumber')) {
+  maxHowManyBalls = Number(localStorage.getItem('maxnumber'));
+} else {
+  maxHowManyBalls = 50;
+}
+if(localStorage.getItem('minnumber')) {
+  howManyBalls = Number(localStorage.getItem('minnumber'));
+} else {
+  howManyBalls = 8;
+}
 
+maxsizevalue.textContent = ` : ${maxSizeBall}`;
+maxsize.setAttribute('value', maxSizeBall);
+minsizevalue.textContent = ` : ${minSizeBall}`;
+minsize.setAttribute('value', minSizeBall);
 speedvalue.textContent = ` : ${speedBall}`;
 speed.setAttribute('value', speedBall);
+maxnumbervalue.textContent = ` : ${maxHowManyBalls}`;
+maxnumber.setAttribute('value', maxHowManyBalls);
+minnumbervalue.textContent = ` : ${howManyBalls}`;
+minnumber.setAttribute('value', howManyBalls);
 
+maxsize.addEventListener('change', function(e) {
+  maxsizevalue.textContent = ` : ${e.target.value}`;
+  localStorage.setItem('maxsize', e.target.value);
+})
+minsize.addEventListener('change', function(e) {
+  minsizevalue.textContent = ` : ${e.target.value}`;
+  localStorage.setItem('minsize', e.target.value);
+})
 speed.addEventListener('change', function(e) {
   speedvalue.textContent = ` : ${e.target.value}`;
   localStorage.setItem('speed', e.target.value);
 })
+maxnumber.addEventListener('change', function(e) {
+  maxnumbervalue.textContent = ` : ${e.target.value}`;
+  localStorage.setItem('maxnumber', e.target.value);
+})
+minnumber.addEventListener('change', function(e) {
+  minnumbervalue.textContent = ` : ${e.target.value}`;
+  localStorage.setItem('minnumber', e.target.value);
+})
 
+
+
+var pixels = (width / 500) * (height / 300);
+var quantityBalls = Math.floor(pixels * howManyBalls);
+if (quantityBalls > maxHowManyBalls) {
+  maxSizeBall = ((quantityBalls - maxHowManyBalls) / 100 + 1) * maxSizeBall;
+  minSizeBall = ((quantityBalls - maxHowManyBalls) / 100 + 1) * minSizeBall;
+  quantityBalls = maxHowManyBalls;
+}
+
+
+var distance;
+var distanceClick;
+var mouseX;
+var mouseY;
+var clickX;
+var clickY;
+var gameScore = 0;
+var gameMaxScore = 0;
+var gameStop = 0;
+
+$("#cog").click(function(event){
+  $(".settings,.fa-cog").toggleClass("active");
+  gameStop = 1;
+});
+$("#top").click(function(event){
+  $(".fa-top").toggleClass("active");
+  gameStop = 1;
+});
 function circle(x,y,size,fillCircle,color) {
   ctx.beginPath();
   ctx.arc(x,y,size,0,Math.PI * 2, false);
@@ -33,28 +119,6 @@ function circle(x,y,size,fillCircle,color) {
     ctx.stroke();
   }
 }
-
-var minSizeBall = 8;
-var maxSizeBall = 14;
-
-var pixels = (width / 500) * (height / 300);
-var quantityBalls = Math.floor(pixels * 8);
-if (quantityBalls > 50) {
-  maxSizeBall = ((quantityBalls - 40) / 100 + 1) * maxSizeBall;
-  minSizeBall = ((quantityBalls - 40) / 100 + 1) * minSizeBall;
-  quantityBalls = 50;
-}
-
-
-var distance;
-var distanceClick;
-var mouseX;
-var mouseY;
-var clickX;
-var clickY;
-var gameScore = 0;
-var gameStop = 0;
-
 function getMouse() {
   $("#canvas").mousemove(function(event){
     mouseX = event.offsetX;
@@ -67,24 +131,39 @@ function getMouseClick() {
     clickY = event.offsetY;
   });
 };
-$("#cog").click(function(event){
-  $(".settings").toggleClass("active");
-  gameStop = 1;
-});
 
 function random(min, max) {
-  var num = Math.floor(Math.random() * (max - min + 1)) + min;
+  var num = 0;
+    while (num === 0) {
+      num = Math.floor(Math.random() * (max - min + 1)) + min;
+    }
   return num;
 };
 function drawScore() {
-  ctx.font = "Bold 25px Courier";
+  ctx.font = "Bold 35px Courier";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
   ctx.lineWidth = 2;
   ctx.strokeStyle = "Gray";
-  ctx.strokeText("Score: " + gameScore, width/2, 5);
+  ctx.strokeText("Score: " + gameScore, width/2, 15);
   ctx.fillStyle = "White";
-  ctx.fillText("Score: " + gameScore, width/2, 5);
+  ctx.fillText("Score: " + gameScore, width/2, 15);
+
+};
+function drawMaxScore() {
+  if(localStorage.getItem('maxscore')) {
+    gameMaxScore = Number(localStorage.getItem('maxscore'));
+  } //else {
+  //   gameMaxScore = 0;
+  // }
+  ctx.font = "Bold 25px Courier";
+  ctx.textAlign = "right";
+  ctx.textBaseline = "top";
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "Gray";
+  ctx.strokeText("Max score: " + gameMaxScore, width - 70, 15);
+  ctx.fillStyle = "White";
+  ctx.fillText("Max score: " + gameMaxScore, width - 70, 15);
 
 };
 function checkMouseOnGamePlace() {
@@ -94,6 +173,9 @@ function checkMouseOnGamePlace() {
 };
 function gameOver() {
   if (gameStop >= 1) {
+    if (gameScore > gameMaxScore) {
+      localStorage.setItem('maxscore', gameScore);
+    }
     ctx.font = "Bold 60px Courier";
     ctx.lineWidth = 2;
     ctx.fillStyle = "White";
@@ -195,7 +277,7 @@ setInterval(function() {
 setInterval(function() {
   ballBlue = new BallScore("Blue", minSizeBall);
 }, random(16000,35000));
-setInterval(checkMouseOnGamePlace(), 100);
+setInterval(checkMouseOnGamePlace, 100);
 
 
 
@@ -217,6 +299,7 @@ var drawGameBalls = setInterval(function() {
     balls[i].checkDistance();
     balls[i].moveStop();
   }
+  drawMaxScore();
   drawScore();
   gameOver();
 }, 20);
