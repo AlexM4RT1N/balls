@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+}
+
+.fa-cog {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+  z-index: 5;
+}
+
+.settings {
+  position: absolute;
+  top: 5px;
+  left: 40px;
+  width: 200px;
+  height: 600px;
+  padding: 15px;
+  background: rgb(99, 99, 99);
+  color: rgb(217, 237, 255);
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid ivory;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.settings__blocks {
+  margin-bottom: 20px;
+  border-bottom: 1px solid ivory;
+  padding-bottom: 5px;
+}
+
+.settings__blocks label {
+  display: block;
+  margin-bottom: 7px;
+}
+
+span {
+  display: inline-block;
+  font-size: 25px;
+  padding-left: 10px;
+}
+
+input {
+  display: inline-block;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}

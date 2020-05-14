@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Balls</title>
+    <link rel="stylesheet" href="./css/style.css" type="text/css" />
+  </head>
+
+  <body>
+
+    <img src="./img/cog.svg" class="fa-cog" id="cog"/>
+
+    <div class="settings">
+      <h2>Game settings:</h2>
+
+      <div class="settings__blocks">
+        <label for="minsize">Min size balls</label>
+        <input type="range" id="minsize" name="minsize" min="1" max="15" value="8" step="1"/>
+        <span id="minsizevalue"> : 8</span>
+      </div>
+
+      <div class="settings__blocks">
+        <label for="speed">Speed balls</label>
+        <input type="range" id="speed" name="speed" min="1" max="20" step="1"/>
+        <span id="speedvalue"> : 5</span>
+      </div>
+      
+    </div>
+
+    <canvas id="canvas"></canvas>
+    
+    <script type="text/javascript" src="./js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="./js/script.js"></script>
+  </body>
+</html>
