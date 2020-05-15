@@ -4,6 +4,7 @@ var ctx = canvas.getContext("2d");
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
 
+const body = document.querySelector('body')
 const maxsize = document.getElementById('maxsize')
 const maxsizevalue = document.getElementById('maxsizevalue')
 const minsize = document.getElementById('minsize')
@@ -15,8 +16,14 @@ const maxnumbervalue = document.getElementById('maxnumbervalue')
 const minnumber = document.getElementById('minnumber')
 const minnumbervalue = document.getElementById('minnumbervalue')
 
-const scorelist = document.getElementById('scorelist')
+const scorelistname = document.getElementById('scorelistname')
+const scorelistscore = document.getElementById('scorelistscore')
 const nameplayer = document.getElementById('nameplayer')
+
+const defaultbtn = document.getElementById('default')
+const changeplayer = document.getElementById('changeplayer')
+const newplayer = document.getElementById('newplayer')
+
 
 var maxSizeBall;
 var minSizeBall;
@@ -24,72 +31,88 @@ var speedBall;
 var maxHowManyBalls;
 var howManyBalls;
 
-if(localStorage.getItem('maxsize')) {
-  maxSizeBall = Number(localStorage.getItem('maxsize'));
-} else {
-  maxSizeBall = 14;
-}
-if(localStorage.getItem('minsize')) {
-  minSizeBall = Number(localStorage.getItem('minsize'));
-} else {
-  minSizeBall = 8;
-}
-if(localStorage.getItem('speed')) {
-  speedBall = Number(localStorage.getItem('speed'));
-} else {
-  speedBall = 5;
-}
-if(localStorage.getItem('maxnumber')) {
-  maxHowManyBalls = Number(localStorage.getItem('maxnumber'));
-} else {
-  maxHowManyBalls = 50;
-}
-if(localStorage.getItem('minnumber')) {
-  howManyBalls = Number(localStorage.getItem('minnumber'));
-} else {
-  howManyBalls = 8;
+let gameDataArray = {
+  maxSizeBall: 14,
+  minSizeBall: 8,
+  speedBall: 5,
+  maxHowManyBalls: 50,
+  howManyBalls: 8,
+  gameMaxScore: 0,
+  nameplayers: {
+    lastplayer: undefined,
+  }
+};
+
+if (localStorage.getItem('gameBalls')) {
+  const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
+  for(let key in dataGame.nameplayers) {
+    // if (key != undefined && dataGame.nameplayers[key] != 0) {
+      if (key != "lastplayer") {
+        const liname = document.createElement('li');
+        liname.textContent = key;
+        scorelistname.appendChild(liname);
+        const liscore = document.createElement('li');
+        liscore.textContent = dataGame.nameplayers[key];
+        scorelistscore.appendChild(liscore);
+      }
+      gameDataArray.nameplayers[key] = dataGame.nameplayers[key];
+    // }
+  }
+  for(let key in dataGame) {
+    if(key != "nameplayers") {
+      if(dataGame[key] != gameDataArray[key]) {
+        gameDataArray[key] = dataGame[key];
+      } 
+    }
+  }
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
 }
 
-maxsizevalue.textContent = ` : ${maxSizeBall}`;
-maxsize.setAttribute('value', maxSizeBall);
-minsizevalue.textContent = ` : ${minSizeBall}`;
-minsize.setAttribute('value', minSizeBall);
-speedvalue.textContent = ` : ${speedBall}`;
-speed.setAttribute('value', speedBall);
-maxnumbervalue.textContent = ` : ${maxHowManyBalls}`;
-maxnumber.setAttribute('value', maxHowManyBalls);
-minnumbervalue.textContent = ` : ${howManyBalls}`;
-minnumber.setAttribute('value', howManyBalls);
+maxsizevalue.textContent = ` : ${gameDataArray.maxSizeBall}`;
+maxsize.setAttribute('value', gameDataArray.maxSizeBall);
+minsizevalue.textContent = ` : ${gameDataArray.minSizeBall}`;
+minsize.setAttribute('value', gameDataArray.minSizeBall);
+speedvalue.textContent = ` : ${gameDataArray.speedBall}`;
+speed.setAttribute('value', gameDataArray.speedBall);
+maxnumbervalue.textContent = ` : ${gameDataArray.maxHowManyBalls}`;
+maxnumber.setAttribute('value', gameDataArray.maxHowManyBalls);
+minnumbervalue.textContent = ` : ${gameDataArray.howManyBalls}`;
+minnumber.setAttribute('value', gameDataArray.howManyBalls);
 
 maxsize.addEventListener('change', function(e) {
   maxsizevalue.textContent = ` : ${e.target.value}`;
-  localStorage.setItem('maxsize', e.target.value);
+  gameDataArray.maxSizeBall = e.target.value;
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
 })
 minsize.addEventListener('change', function(e) {
   minsizevalue.textContent = ` : ${e.target.value}`;
-  localStorage.setItem('minsize', e.target.value);
+  gameDataArray.minSizeBall = e.target.value;
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
 })
 speed.addEventListener('change', function(e) {
   speedvalue.textContent = ` : ${e.target.value}`;
-  localStorage.setItem('speed', e.target.value);
+  gameDataArray.speedBall = e.target.value;
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
 })
 maxnumber.addEventListener('change', function(e) {
   maxnumbervalue.textContent = ` : ${e.target.value}`;
-  localStorage.setItem('maxnumber', e.target.value);
+  gameDataArray.maxHowManyBalls = e.target.value;
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
 })
 minnumber.addEventListener('change', function(e) {
   minnumbervalue.textContent = ` : ${e.target.value}`;
-  localStorage.setItem('minnumber', e.target.value);
+  gameDataArray.howManyBalls = e.target.value;
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
 })
 
 
 
 var pixels = (width / 500) * (height / 300);
-var quantityBalls = Math.floor(pixels * howManyBalls);
-if (quantityBalls > maxHowManyBalls) {
-  maxSizeBall = ((quantityBalls - maxHowManyBalls) / 100 + 1) * maxSizeBall;
-  minSizeBall = ((quantityBalls - maxHowManyBalls) / 100 + 1) * minSizeBall;
-  quantityBalls = maxHowManyBalls;
+var quantityBalls = Math.floor(pixels * gameDataArray.howManyBalls);
+if (quantityBalls > gameDataArray.maxHowManyBalls) {
+  gameDataArray.maxSizeBall = ((quantityBalls - gameDataArray.maxHowManyBalls) / 100 + 1) * gameDataArray.maxSizeBall;
+  gameDataArray.minSizeBall = ((quantityBalls - gameDataArray.maxHowManyBalls) / 100 + 1) * gameDataArray.minSizeBall;
+  quantityBalls = gameDataArray.maxHowManyBalls;
 }
 
 
@@ -101,45 +124,102 @@ var clickX;
 var clickY;
 var border = 65;
 var gameScore = 0;
-var gameMaxScore = 0;
+// var gameMaxScore = 0;
 var gameStop = 0;
-// var inputscorelist;
+var gameStart;
+var inputscorelist;
 
 $("#cog").click(function(event){
   $(".settings,.fa-cog").toggleClass("active");
-  gameStop = 1;
+  // gameStop = 1;
 });
 $("#top").click(function(event){
-  $(".fa-top").toggleClass("active");
-  gameStop = 1;
+  $(".score-list,.fa-top").toggleClass("active");
+  // gameStop = 1;
 });
-let gameDataArray = [];
-localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
-const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
-$("#play").click(function(event){
-  $(".fa-play").toggleClass("active");
-  var inputscorelist = nameplayer.value;
-  gameDataArray.push(inputscorelist)
-  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray))
-  gameDataArray.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = item;
-    scorelist.appendChild(li);
+defaultbtn.addEventListener('click', function(e){
+  localStorage.removeItem('gameBalls');
+  // maxSizeBall: 14,
+  // minSizeBall: 8,
+  // speedBall: 5,
+  // maxHowManyBalls: 50,
+  // howManyBalls: 8,
+  // gameMaxScore: 0,
+})
+changeplayer.addEventListener('click', function(e){
+  $(".fa-play,.nameplayer,.name-label").toggleClass("hidden");
+})
+newplayer.addEventListener('click', function(e){
+  $(".fa-play,.nameplayer,.name-label").toggleClass("hidden");
+  gameDataArray.nameplayers.lastplayer = undefined;
+  localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
+})
+
+if(gameDataArray.nameplayers.lastplayer != undefined) {
+  $(".fa-play,.nameplayer").toggleClass("hidden");
+  inputscorelist = gameDataArray.nameplayers.lastplayer;
+  const namelabel = document.createElement('p');
+  namelabel.className = ('name-label');
+  namelabel.textContent = inputscorelist;
+  body.appendChild(namelabel);
+  setTimeout(function(){ 
+    gameStart = 1;
+  }, 2500);
+}
+function checkValidname(name) {
+  var characterValid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+  var arrValidInput = characterValid.split('');
+  var arrValidname = name.split('');
+  var checkValidchar = 0;
+  arrValidname.forEach(item =>{
+    for(let i = 0; i < arrValidInput.length; i++) {
+      if(item != arrValidInput[i]) {
+        checkValidchar++;
+      }
+    }
   })
-  
-  // gameStart = 1;
+  if(characterValid.length*name.length-name.length === checkValidchar) {
+    return 1;
+  }else{
+    return 0;
+  }
+}
+$("#play").click(function(event){
+  inputscorelist = nameplayer.value;
+  var checkValidatename = checkValidname(inputscorelist);
+  if (inputscorelist.length > 2 && inputscorelist.length < 13 && checkValidatename === 1) {
+    gameDataArray.nameplayers.lastplayer = inputscorelist;
+    $(".fa-play").toggleClass("active");
+    $(".fa-play,.nameplayer").toggleClass("hidden");
+    if(gameDataArray.nameplayers[inputscorelist] === undefined){
+      gameDataArray.nameplayers[inputscorelist]  = gameScore;
+    } else {
+      gameDataArray.nameplayers[inputscorelist] = gameDataArray.nameplayers[inputscorelist];
+    }
+    localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
+    const namelabel = document.createElement('p');
+    namelabel.className = ('name-label');
+    namelabel.textContent = inputscorelist;
+    body.appendChild(namelabel);
+    gameStart = 1;
+  }
 });
+
 function getMouse() {
-  $("#canvas").mousemove(function(event){
-    mouseX = event.offsetX;
-    mouseY = event.offsetY;
-  });
+  if (gameStart === 1) {
+    $("#canvas").mousemove(function(event){
+      mouseX = event.offsetX;
+      mouseY = event.offsetY;
+    });
+  }
 };
 function getMouseClick() {
-  $("#canvas").click(function(event){
-    clickX = event.offsetX;
-    clickY = event.offsetY;
-  });
+  if (gameStart === 1) {
+    $("#canvas").click(function(event){
+      clickX = event.offsetX;
+      clickY = event.offsetY;
+    });
+  }
 };
 
 function random(min, max) {
@@ -184,31 +264,32 @@ function drawScore() {
   ctx.font = "Bold 42px serif";
   ctx.strokeText(gameScore, width/2+52, 15);
   ctx.fillText(gameScore, width/2+52, 15);
-
 };
 function drawMaxScore() {
-  if(localStorage.getItem('maxscore')) {
-    gameMaxScore = Number(localStorage.getItem('maxscore'));
+  if(localStorage.getItem('gameBalls')) {
+    const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
+    gameDataArray.gameMaxScore = dataGame.gameMaxScore;
   }
   ctx.font = "24px serif";
   ctx.textAlign = "right";
   ctx.textBaseline = "top";
   ctx.lineWidth = 2;
   ctx.strokeStyle = "Gray";
-  ctx.strokeText("Max score: " + gameMaxScore, width - 90, 22);
+  ctx.strokeText("Max score: " + gameDataArray.gameMaxScore, width - 90, 22);
   ctx.fillStyle = "White";
-  ctx.fillText("Max score: " + gameMaxScore, width - 90, 22);
+  ctx.fillText("Max score: " + gameDataArray.gameMaxScore, width - 90, 22);
 
 };
 function checkMouseOnGamePlace() {
-  if ((mouseX < minSizeBall || mouseX > width - minSizeBall) || (mouseY < minSizeBall + border || mouseY > height - minSizeBall)) {
+  if ((mouseX < gameDataArray.minSizeBall || mouseX > width - gameDataArray.minSizeBall) || (mouseY < gameDataArray.minSizeBall + border || mouseY > height - gameDataArray.minSizeBall)) {
     gameScore = 0;
   }
 };
 function gameOver() {
   if (gameStop >= 1) {
-    if (gameScore > gameMaxScore) {
-      localStorage.setItem('maxscore', gameScore);
+    if (gameScore > gameDataArray.gameMaxScore) {
+       gameDataArray.gameMaxScore = gameScore;
+      localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
     }
     ctx.font = "Bold 60px serif";
     ctx.lineWidth = 2;
@@ -219,6 +300,13 @@ function gameOver() {
     ctx.strokeStyle = "Gray";
     ctx.strokeText("Game Over", width / 2, height / 2);
     gameStop++;
+    var maxPlayerScore = gameDataArray.nameplayers[inputscorelist];
+    if (maxPlayerScore < gameScore) {
+      gameDataArray.nameplayers[inputscorelist] = gameScore;
+    } else {
+      gameDataArray.nameplayers[inputscorelist] = maxPlayerScore;
+    }
+    localStorage.setItem('gameBalls', JSON.stringify(gameDataArray))
     setTimeout(function(){ 
       clearInterval(drawGameBalls);
     }, 2500);
@@ -226,12 +314,12 @@ function gameOver() {
 };
 
 function Ball(color) {
-  this.x =  random(0 + maxSizeBall*2,width - maxSizeBall*2);//width/2;
-  this.y =  random(0 + maxSizeBall*2 + border,height - maxSizeBall*2);//(height-border)/2;
-  this.xSpeed = random(-speedBall, speedBall);
-  this.ySpeed = random(-speedBall, speedBall);
+  this.x =  random(0 + gameDataArray.maxSizeBall*2,width - gameDataArray.maxSizeBall*2);//width/2;
+  this.y =  random(0 + gameDataArray.maxSizeBall*2 + border,height - gameDataArray.maxSizeBall*2);//(height-border)/2;
+  this.xSpeed = random(-gameDataArray.speedBall, gameDataArray.speedBall);
+  this.ySpeed = random(-gameDataArray.speedBall, gameDataArray.speedBall);
   this.color = color;
-  this.size = random(minSizeBall,maxSizeBall);
+  this.size = random(gameDataArray.minSizeBall,gameDataArray.maxSizeBall);
 };
 Ball.prototype.draw = function () {
   circle(this.x, this.y, this.size, true, this.color);
@@ -271,8 +359,8 @@ Ball.prototype.checkDistance = function() {
 };
 
 function BallScore(color, size) {
-  this.x = random(0 + maxSizeBall * 2, width - maxSizeBall * 2);
-  this.y = random(0 + maxSizeBall * 2 + border, height - maxSizeBall * 2);
+  this.x = random(0 + gameDataArray.maxSizeBall * 2, width - gameDataArray.maxSizeBall * 2);
+  this.y = random(0 + gameDataArray.maxSizeBall * 2 + border, height - gameDataArray.maxSizeBall * 2);
   this.color = color;
   this.size = size;
 };
@@ -283,8 +371,8 @@ BallScore.prototype.checkClick = function() {
   distanceClick = Math.sqrt(((clickX - this.x) * (clickX - this.x)) + ((clickY - this.y) * (clickY - this.y)));
   if (distanceClick < this.size) {
     if(this.color === "Green") {
-      this.x = random(0 + maxSizeBall * 2, width - maxSizeBall * 2);
-      this.y = random(0 + maxSizeBall * 2 + border, height - maxSizeBall * 2);
+      this.x = random(0 + gameDataArray.maxSizeBall * 2, width - gameDataArray.maxSizeBall * 2);
+      this.y = random(0 + gameDataArray.maxSizeBall * 2 + border, height - gameDataArray.maxSizeBall * 2);
       gameScore++;
     } else if(this.color === "Yellow") {
       this.size = 0;
@@ -296,28 +384,29 @@ BallScore.prototype.checkClick = function() {
   }
 };
 
-var balls = [];
-for (var i=0;i<quantityBalls;i++) {
-  balls[i] = new Ball("White");
-}
 
-var ballGreen = new BallScore("Green", maxSizeBall);
+var ballGreen = new BallScore("Green", gameDataArray.maxSizeBall);
 var ballYellow = new BallScore("Yellow", 0);
 var ballBlue  = new BallScore("Blue", 0);
 
 setInterval(function() {
-  ballYellow = new BallScore("Yellow", ((maxSizeBall - minSizeBall) / 2 + minSizeBall));
+  ballYellow = new BallScore("Yellow", ((gameDataArray.maxSizeBall - gameDataArray.minSizeBall) / 2 + gameDataArray.minSizeBall));
 }, random(6000,16000));
 setInterval(function() {
-  ballBlue = new BallScore("Blue", minSizeBall);
+  ballBlue = new BallScore("Blue", gameDataArray.minSizeBall);
 }, random(16000,35000));
 setInterval(checkMouseOnGamePlace, 100);
 
 
 
+var balls = [];
 var drawGameBalls = setInterval(function() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
   ctx.fillRect(0,0,width,height);
+  while (balls.length < quantityBalls) {
+    var ball = new Ball("White");
+    balls.push(ball);
+  }
   drawBorder();
   getMouse();
   getMouseClick();
@@ -327,13 +416,14 @@ var drawGameBalls = setInterval(function() {
   ballYellow.checkClick();
   ballBlue.draw();
   ballBlue.checkClick();
-  for (var i=0;i<balls.length;i++) {
-    balls[i].draw();
-    balls[i].move();
-    balls[i].checkCollision();
-    balls[i].checkDistance();
-    balls[i].moveStop();
-  }
+
+  balls.forEach(item =>{
+    item.draw();
+    item.move();
+    item.checkCollision();
+    item.checkDistance();
+    item.moveStop();
+  })
   drawMaxScore();
   drawScore();
   gameOver();

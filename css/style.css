@@ -89,6 +89,8 @@ img {
 
 .fa-play {
   position: absolute;
+  visibility: visible;
+  opacity: 1;
   cursor: pointer;
   top: 5px;
   left: calc(50% - 110px);
@@ -217,8 +219,9 @@ img {
 }
 
 .nameplayer {
-  /* display: none; */
   position: absolute;
+  visibility: visible;
+  opacity: 1;
   top: 5px;
   left: 110px;
   width: 245px;
@@ -257,34 +260,94 @@ img {
   transition: all 0.5s;
 }
 
+.name-label {
+  font-size: 48px;
+  position: absolute;
+  visibility: visible;
+  opacity: 1;
+  top: 5px;
+  left: 110px;
+  width: 245px;
+  height: 51px;
+  padding: 0px 15px;
+  color: rgb(217, 237, 255);
+  transition: all 0.5s;
+  text-shadow:  1px 5px 4px rgb(150, 150, 150);
+}
+
+.nameplayer.hidden,
+.fa-play.hidden,
+.name-label.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
 .score-list {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   top: 80px;
   right: 15px;
-  width: 230px;
+  min-width: 230px;
   height: 430px;
   padding: 15px;
   background: rgb(99, 99, 99);
   color: rgb(217, 237, 255);
   color: rgb(217, 237, 255);
+  transition: all 0.5s;
+  font-size: 30px;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: space-between;
 }
+.score-list li:first-child {
+  flex: 70%;
+}
+.score-list-name li,
+.score-list-score li {
+  margin-bottom: 12px;
+}
+
 
 .settings {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
-  top: 15px;
-  left: 70px;
+  top: 80px;
+  left: 15px;
   width: 230px;
-  height: 430px;
+  min-height: 430px;
   padding: 15px;
   background: rgb(99, 99, 99);
   color: rgb(217, 237, 255);
   color: rgb(217, 237, 255);
+  transition: all 0.5s;
 }
 
-.active {
-  display: block;
+.settings__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 80px;
+}
+.default {
+  flex: 100%;
+  margin-bottom: 10px;
+}
+.change-player {
+  margin-right: 10px;
+  flex: 0 0 calc(50% - 5px);
+}
+.new-player {
+  flex: 0 0 calc(50% - 5px);
+}
+
+
+.score-list.active,
+.settings.active {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.5s;
 }
 
 h2 {

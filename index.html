@@ -16,13 +16,24 @@
     <img src="./img/scoresub.svg" class="fa-score fa-scoresub"/>
     <img src="./img/play.svg" class="fa-play" id="play"/>
     <img src="./img/playsub.svg" class="fa-play fa-playsub"/>
-    <input class="nameplayer" type="text" id="nameplayer" placeholder="Your Nickname..."/>
+    <input class="nameplayer" name="name" type="text" id="nameplayer" 
+    placeholder="Your Nickname... *" pattern="[0-9A-Za-z_-]+"
+    minlength="3" maxlength="12" required/>
 
     <ul class="score-list" id="scorelist">
+      <li>
+        <ul class="score-list-name" id="scorelistname">
 
+        </ul>
+      </li>
+      <li>
+        <ul class="score-list-score" id="scorelistscore">
+
+        </ul>
+      </li>
     </ul>
 
-    <div class="settings" id="settings">
+    <form class="settings" id="settings">
       <h2>Game settings:</h2>
 
       <div class="settings__blocks">
@@ -54,7 +65,20 @@
         <input type="range" id="minnumber" name="minnumber" min="1" max="20" step="1"/>
         <span id="minnumbervalue"></span>
       </div>
-    </div>
+
+      <div class="settings__buttons">
+        <button class="default" id="default">Reset settings to default</button>
+        
+        <button class="change-player" id="changeplayer">Change player</button>
+        <button class="new-player" id="newplayer">New player</button>
+
+        <!-- <ul class="list-cH_M4RT1Nhange-player" id="listchangeplayer">
+          <li></li>
+        </ul> -->
+
+      </div>
+
+    </form>
 
     <canvas id="canvas"></canvas>
     
