@@ -93,7 +93,7 @@ img {
   opacity: 1;
   cursor: pointer;
   top: 5px;
-  left: calc(50% - 110px);
+  left: calc(25% + 127px);
   width: 50px;
   height: 50px;
   z-index: 5;
@@ -108,7 +108,7 @@ img {
 .fa-play:hover,
 .fa-play:hover + .fa-playsub {
   top: 5px;
-  left: calc(50% - 110px);
+  left: calc(25% + 127px);
   width: 50px;
   height: 50px;
   transform: rotateX(0deg);
@@ -117,7 +117,7 @@ img {
 }
 .fa-play.active {
   top: 9px;
-  left: calc(50% - 110px);
+  left: calc(25% + 127px);
   width: 42px;
   height: 42px;
   transform: rotateX(0deg);
@@ -223,7 +223,7 @@ img {
   visibility: visible;
   opacity: 1;
   top: 5px;
-  left: 110px;
+  left: calc(25% - 127px);
   width: 245px;
   height: 51px;
   padding: 15px;
@@ -266,7 +266,7 @@ img {
   visibility: visible;
   opacity: 1;
   top: 5px;
-  left: 110px;
+  left: calc(25% - 127px);
   width: 245px;
   height: 51px;
   padding: 0px 15px;
@@ -308,6 +308,9 @@ img {
 .score-list-score li {
   margin-bottom: 12px;
 }
+.score-list-score li {
+  padding-left: 12px;
+}
 
 
 .settings {
@@ -327,24 +330,76 @@ img {
 
 .settings__buttons {
   display: flex;
+  position: relative;
   flex-wrap: wrap;
   min-height: 80px;
 }
 .default {
+  color: rgb(217, 237, 255);
   flex: 100%;
   margin-bottom: 10px;
 }
 .change-player {
   margin-right: 10px;
   flex: 0 0 calc(50% - 5px);
+  
 }
+.list-change-name {
+  visibility: hidden;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  font-size: 18px;
+  bottom: 35px;
+  left: 0px;
+  padding: 5px;
+  border: 1px solid snow;
+  box-shadow: 3px 5px 5px rgb(29, 29, 29);
+  background: rgb(99, 99, 99);
+  color: rgb(217, 237, 255);
+  color: rgb(217, 237, 255);
+  transition: all 0.5s;
+}
+.list-change-name li {
+  padding: 8px 12px;
+  color: rgb(217, 237, 255);
+  background: rgb(56, 56, 56);
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.list-change-name li:hover {
+  background: rgb(124, 124, 124);
+  transform: scale(1.05);
+  box-shadow: 3px 5px 5px rgb(29, 29, 29);
+  transition: all 0.5s;
+}
+
 .new-player {
   flex: 0 0 calc(50% - 5px);
 }
-
+.new-player,
+.change-player ,
+.default {
+  background: rgb(56, 56, 56);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+.new-player:hover,
+.change-player:hover,
+.default:hover {
+  transform: scale(1.05);
+  box-shadow: 3px 5px 5px rgb(29, 29, 29);
+  background: rgb(124, 124, 124);
+  transition: all 0.5s;
+}
 
 .score-list.active,
-.settings.active {
+.settings.active,
+.list-change-name.active {
   visibility: visible;
   opacity: 1;
   transition: all 0.5s;

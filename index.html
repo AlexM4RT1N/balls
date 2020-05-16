@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Balls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="./css/style.css" type="text/css" />
   </head>
 
@@ -55,26 +56,21 @@
       </div>
 
       <div class="settings__blocks">
-        <label for="maxnumber">Max number of balls</label>
-        <input type="range" id="maxnumber" name="maxnumber" min="10" max="100" step="5"/>
-        <span id="maxnumbervalue"></span>
+        <label for="ballsnumber">Number of balls</label>
+        <input type="range" id="ballsnumber" name="ballsnumber" min="0" max="120" step="5"/>
+        <span id="ballsnumbervalue"></span>
       </div>
 
-      <div class="settings__blocks">
-        <label for="minnumber">Min number of balls</label>
-        <input type="range" id="minnumber" name="minnumber" min="1" max="20" step="1"/>
-        <span id="minnumbervalue"></span>
-      </div>
-
+      
       <div class="settings__buttons">
         <button class="default" id="default">Reset settings to default</button>
         
-        <button class="change-player" id="changeplayer">Change player</button>
-        <button class="new-player" id="newplayer">New player</button>
+        <div class="change-player" id="changeplayer">Change player</div>
+        <div class="new-player" id="newplayer">New player</div>
 
-        <!-- <ul class="list-cH_M4RT1Nhange-player" id="listchangeplayer">
-          <li></li>
-        </ul> -->
+        <ul class="list-change-name" id="listchangename">
+          
+        </ul>
 
       </div>
 
