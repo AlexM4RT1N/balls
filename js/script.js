@@ -148,7 +148,7 @@ $(".li-change-name").click(function(event){
   localStorage.setItem('gameBalls', JSON.stringify(gameDataArray));
   setTimeout(function(){ 
     location.reload();
-  }, 1000);
+  }, 150);
 })
 $("#cog").click(function(event){
   $(".settings,.fa-cog").toggleClass("active");
@@ -165,6 +165,7 @@ $("#play").click(function(event){
     $(".fa-play,.nameplayer").toggleClass("hidden");
     if(gameDataArray.nameplayers[inputscorelist] === undefined){
       gameDataArray.nameplayers[inputscorelist]  = gameScore;
+      ///   Added individual settings default
     } else {
       gameDataArray.nameplayers[inputscorelist] = gameDataArray.nameplayers[inputscorelist];
     }
