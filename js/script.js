@@ -3,6 +3,7 @@ var ctx = canvas.getContext("2d");
 
 var width = canvas.width = window.innerWidth;
 var height = canvas.height = window.innerHeight;
+//////////////////////// BUTTON RELOADED AFTER GAME OVER
 
 const body = document.querySelector('body')
 const maxsize = document.getElementById('maxsize')
@@ -53,6 +54,23 @@ let gameDataArray = {
   }
 };
 
+function quantityOnPixels() {
+  var pixels = (width / 500) * (height / 300);
+  gameDataArray.quantityBalls = Math.floor(pixels * howManyBalls);
+  if (gameDataArray.quantityBalls > maxHowManyBalls) {
+    gameDataArray.maxSizeBall = Math.round(((gameDataArray.quantityBalls - maxHowManyBalls) / 100 + 1) * gameDataArray.maxSizeBall);
+    gameDataArray.minSizeBall = Math.round(((gameDataArray.quantityBalls - maxHowManyBalls) / 100 + 1) * gameDataArray.minSizeBall);
+    gameDataArray.quantityBalls = maxHowManyBalls;
+  }
+  if (localStorage.getItem('gameBalls')) {
+    const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
+    if (dataGame.quantityBalls != gameDataArray.quantityBalls) {
+      gameDataArray.quantityBalls = Number(dataGame.quantityBalls);
+      gameDataArray.maxSizeBall = Number(dataGame.maxSizeBall);
+      gameDataArray.minSizeBall = Number(dataGame.minSizeBall);
+    }  
+  }  
+}
 
 if (localStorage.getItem('gameBalls')) {
   const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
@@ -181,23 +199,7 @@ $("#play").click(function(event){
   }
 });
 
-function quantityOnPixels() {
-  var pixels = (width / 500) * (height / 300);
-  gameDataArray.quantityBalls = Math.floor(pixels * howManyBalls);
-  if (gameDataArray.quantityBalls > maxHowManyBalls) {
-    gameDataArray.maxSizeBall = Math.round(((gameDataArray.quantityBalls - maxHowManyBalls) / 100 + 1) * gameDataArray.maxSizeBall);
-    gameDataArray.minSizeBall = Math.round(((gameDataArray.quantityBalls - maxHowManyBalls) / 100 + 1) * gameDataArray.minSizeBall);
-    gameDataArray.quantityBalls = maxHowManyBalls;
-  }
-  if (localStorage.getItem('gameBalls')) {
-    const dataGame = JSON.parse(localStorage.getItem('gameBalls'));
-    if (dataGame.quantityBalls != gameDataArray.quantityBalls) {
-      gameDataArray.quantityBalls = Number(dataGame.quantityBalls);
-      gameDataArray.maxSizeBall = Number(dataGame.maxSizeBall);
-      gameDataArray.minSizeBall = Number(dataGame.minSizeBall);
-    }  
-  }  
-}
+
 function realyChangeNull() {
   if (checkRealyChange === 1) {
     tempQuantiy = gameDataArray.quantityBalls;
